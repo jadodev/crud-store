@@ -25,7 +25,7 @@ export class BranchDomainServce implements BranchServicePort {
         return await this.repository.update(id, branch);
     }
     
-    async delete(id: number){
+    async delete(id: number): Promise<void>{
      await this.repository.delete(id);
     }
 }

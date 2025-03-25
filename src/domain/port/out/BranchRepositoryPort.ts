@@ -5,5 +5,5 @@ export interface BranchRepositoryPort {
     getById(id: number): Promise<Branch>;
     getAll(): Promise<Branch[]>;
     update(id: number, branch:Branch): Promise<Branch>;
-    delete(id: number): void;
+    delete(id: number): Promise<void>;
 }
