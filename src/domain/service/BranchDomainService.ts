@@ -28,4 +28,4 @@ export class BranchDomainServce implements BranchServicePort {
     async delete(id: number): Promise<void>{
      await this.repository.delete(id);
     }
-}
+} 

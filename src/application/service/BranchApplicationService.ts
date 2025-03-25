@@ -12,7 +12,9 @@ export class BranchApplicationService {
 
     async create( branchDto: BranchDTO):Promise<BranchDTO>{
         const branch = BranchMapper.toDomain(branchDto);
+        console.log(branch);
         const branchCreated = await this.serviceDomain.create(branch);
+        console.log(branchCreated)
         return BranchMapper.toDto(branchCreated);
     }
 
@@ -35,4 +37,4 @@ export class BranchApplicationService {
     async delete(id: number): Promise<void>{
         await this.serviceDomain.delete(id);
     }
-}
+} 
