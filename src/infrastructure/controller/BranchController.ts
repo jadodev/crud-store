@@ -13,7 +13,6 @@ export class BranchController {
     public async create(@Body() branchDto: BranchDTO): Promise<BranchDTO>{
         try {
             const newBranch = await this.branchService.create(branchDto);
-            console.log(newBranch);
             return newBranch;
         } catch( error){
             throw BranchExceptionHandler.creationError(error.message);

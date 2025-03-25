@@ -16,9 +16,7 @@ export class BrancHRepository implements BranchRepositoryPort {
 
     async save(branch: Branch): Promise<Branch> {
         const entity = MapperEntity.toEntity(branch);
-        console.log(entity);
         const savedEntity = await this.branchRepository.save(entity);
-        console.log(savedEntity);
         return MapperEntity.toDomain(savedEntity);
     }
 
