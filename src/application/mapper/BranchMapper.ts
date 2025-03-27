@@ -7,7 +7,9 @@ export class BranchMapper {
             branch.id,
             branch.name,
             branch.address,
-            branch.city
+            branch.city,
+            branch.tenantid,
+            branch.password
         )
     }
 
@@ -16,7 +18,9 @@ export class BranchMapper {
             branchDto.id,
             branchDto.name,
             branchDto.address,
-            branchDto.city
+            branchDto.city,
+            branchDto.tenantid ?? '',
+            branchDto.password
         )
     }
 }

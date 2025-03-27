@@ -1,12 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, UnauthorizedException, Header, Req, Headers } from "@nestjs/common";
 import { BranchDTO } from "src/application/dto/BranchDTO";
 import { BranchApplicationService } from "src/application/service/BranchApplicationService";
 import { BranchExceptionHandler } from "src/exceptions/HandlerException";
+import { ProductService } from "../service/ProductService";
 
 @Controller("branch")
 export class BranchController {
     constructor(
-        private readonly branchService: BranchApplicationService
+        private readonly branchService: BranchApplicationService,
+        private readonly service: ProductService
     ){}
 
     @Post()
@@ -39,14 +41,27 @@ export class BranchController {
         }
     }
 
+    @Get(":tenantid")
+    public async getBytenantid(@Param("tenantid") id: string): Promise<BranchDTO>{
+        try{
+            const branch = await this.branchService.getBytenantid(id);
+            return branch;
+        } catch(error){
+            throw BranchExceptionHandler.notFound(error.message);
+        }
+    }
+
+
     @Put(":id")
-    public async update(@Param("id")id:number, @Body()branchDto: BranchDTO): Promise<BranchDTO>{
+    public async update(@Param("id") id: number, @Body()branchDto: BranchDTO): Promise<BranchDTO>{
         try{
             const branch = new BranchDTO(
                 id,
                 branchDto.name,
                 branchDto.address,
-                branchDto.city
+                branchDto.city,
+                branchDto.tenantid || "",
+                branchDto.password
             );
 
             const update = await this.branchService.update(id, branch);
@@ -68,5 +83,10 @@ export class BranchController {
       } catch (error) {
         throw BranchExceptionHandler.deletionError(error.message);
       }
+    }
+
+    @Post('products')
+    async fetchToMs(@Req() req: Request, @Body() requestProduct: any): Promise<any> {
+      return await this.service.getProductsFromMsProducts(requestProduct);
     }
 } 

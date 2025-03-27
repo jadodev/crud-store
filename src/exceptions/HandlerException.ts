@@ -1,3 +1,5 @@
+import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
+
 export class ExceptionHandler extends Error {
     public code: string;
   
@@ -32,6 +34,16 @@ export class ExceptionHandler extends Error {
 
     static unknowError (message = "Error desconcido"){
         return new ExceptionHandler(message, "UNKOWN_ERROR");
+    }
+
+    static emptyFiledError (message = "Campo vació"){
+      return new ExceptionHandler(message, "EMPTY_FIELD");
+    }
+  }
+
+  export class RequestServiceError {
+    static RequestError(message= "Error en la petición"){
+      return new ExceptionHandler(message, "REQUEST_ERROR");
     }
   }
   

@@ -1,14 +1,32 @@
+import { IsNotEmpty, IsString, IsUUID } from "class-validator";
+
 export class BranchDTO {
     id: number;
+
+    @IsString()
+    @IsNotEmpty()
     name: string;
+
+    @IsString()
+    @IsNotEmpty()
     address: string;
+
+    @IsString()
+    @IsNotEmpty()
     city:string;
 
-    constructor(id: number, name: string, address: string, city:string) {
+    @IsUUID()
+    tenantid?: string;
+
+    password: string;
+
+    constructor(id: number, name: string, address: string, city:string, tenantid: string, password: string) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.city = city;
+        this.tenantid = tenantid;
+        this.password = password;
     }
 
     public getId(): number {
@@ -27,6 +45,14 @@ export class BranchDTO {
         return this.city;
     }
 
+    public getPassword(): string {
+        return this.password;
+    }
+    
+    public gettenantid(): string | undefined {
+        return this.tenantid;
+    }
+
     public setName(name: string): void {
         this.name = name;
     }
@@ -37,5 +63,9 @@ export class BranchDTO {
 
     public setCity(city: string): void{
         this.city = city;
+    }
+
+    public setPassword( password: string): void {
+        this.password = password;
     }
 }

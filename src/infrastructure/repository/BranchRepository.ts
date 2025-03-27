@@ -26,6 +26,12 @@ export class BrancHRepository implements BranchRepositoryPort {
         return MapperEntity.toDomain(entity);
     }
 
+    async getBytenantid(id: string): Promise<Branch> {
+        const entity = await this.branchRepository.findOneBy({ tenantid: id });
+        if(!entity) throw BranchExceptionHandler.notFound();
+        return MapperEntity.toDomain(entity);
+    }
+
     async getAll(): Promise<Branch[]> {
         const branches = await this.branchRepository.find();
         return branches.map(MapperEntity.toDomain);

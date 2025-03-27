@@ -2,6 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { BranchDomainServce } from "src/domain/service/BranchDomainService";
 import { BranchDTO } from "../dto/BranchDTO";
 import { BranchMapper } from "../mapper/BranchMapper";
+import { BranchExceptionHandler } from "src/exceptions/HandlerException";
 
 @Injectable()
 export class BranchApplicationService {
@@ -11,6 +12,12 @@ export class BranchApplicationService {
     ){}
 
     async create( branchDto: BranchDTO):Promise<BranchDTO>{
+
+        if(!branchDto.name) throw BranchExceptionHandler.emptyFiledError();
+        if(!branchDto.address) throw BranchExceptionHandler.emptyFiledError();
+        if(!branchDto.city) throw BranchExceptionHandler.emptyFiledError();
+        if(!branchDto.password) throw BranchExceptionHandler.emptyFiledError();
+
         const branch = BranchMapper.toDomain(branchDto);
         const branchCreated = await this.serviceDomain.create(branch);
         return BranchMapper.toDto(branchCreated);
@@ -34,5 +41,10 @@ export class BranchApplicationService {
 
     async delete(id: number): Promise<void>{
         await this.serviceDomain.delete(id);
+    }
+
+    async getBytenantid(id: string): Promise<BranchDTO>{
+        const branch = await this.serviceDomain.getBytenantid(id);
+        return BranchMapper.toDto(branch);
     }
 } 

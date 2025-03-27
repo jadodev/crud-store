@@ -8,13 +8,17 @@ export class BranchDomainServce implements BranchServicePort {
     constructor( @Inject("repositoryPort") 
         private readonly repository: BranchRepositoryPort
     ){}
-    
+
     async create(branch: Branch): Promise<Branch> {
         return await this.repository.save(branch);
     }
     
     async getById(id: number): Promise<Branch> {
         return await this.repository.getById(id);
+    }
+
+    async getBytenantid(id: string): Promise<Branch> {
+        return await this.repository.getBytenantid(id);
     }
     
     async getAll(): Promise<Branch[]> {
