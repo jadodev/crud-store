@@ -24,7 +24,7 @@ export class LoginRepository implements LoginRepositoryPort {
           branch.name,
           branch.address,
           branch.city,
-          branch.tenantid,
+          branch.tenant_id,
           branch.password
         );
   }

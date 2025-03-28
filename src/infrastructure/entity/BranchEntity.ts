@@ -1,8 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
 
 @Entity('branch')
 export class BranchEntity {
-    @PrimaryGeneratedColumn()
+
+    @PrimaryGeneratedColumn('uuid')
+    tenant_id: string;
+  
+    @Column({ unique: true })
     id: number;
   
     @Column()
@@ -13,19 +17,16 @@ export class BranchEntity {
   
     @Column()
     city: string;
-
-    @Column({ type: 'uuid', unique: true })
-    tenantid: string;
-
+  
     @Column()
     password: string;
 
-    constructor(id: number, name: string, address: string, city: string, tenantid: string, password: string) {
+    constructor(id: number, name: string, address: string, city: string, tenant_id: string, password: string) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.city = city;
-        this.tenantid = tenantid;
+        this.tenant_id = tenant_id;
         this.password = password;
     }
 
@@ -46,7 +47,7 @@ export class BranchEntity {
     }
 
     public gettenantid(): string {
-        return this.tenantid;
+        return this.tenant_id;
     }
 
     public getPassword(): string{

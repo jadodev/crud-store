@@ -11,6 +11,14 @@ import { AuthService } from './application/service/AuthService';
 import { LoginRepository } from './infrastructure/repository/LoginRepository';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtMiddleware } from './middleware/JwtMiddleware';
+import { GlobalProductRepository } from './infrastructure/repository/GlobalProductRepository';
+import { GlobalProductServiceDomain } from './domain/service/GlobalProductServiceDomain';
+import { GlobalProductController } from './infrastructure/controller/GlobalProductController';
+import { GlobalProductEntity } from './infrastructure/entity/GlobalproductEntity';
+import { GlobalProductServiceApp } from './application/service/GlobalProductServiceApp';
+import { BranchProductServiceApp } from './application/service/BranchServiceProductApp';
+import { BranchProductEntity } from './infrastructure/entity/BranchProductEntity';
+import { BranchProductRepository } from './infrastructure/repository/BranchProductRepository';
 
 @Module({
     imports:[
@@ -23,17 +31,27 @@ import { JwtMiddleware } from './middleware/JwtMiddleware';
             database:"postgres",
             autoLoadEntities:true,
         }),
-        TypeOrmModule.forFeature([BranchEntity]),
+        TypeOrmModule.forFeature([
+            BranchEntity, 
+            GlobalProductEntity,
+            BranchProductEntity
+        ]),
         JwtModule.register({
             secret: process.env.JWT_SECRET || 'secreto',
             signOptions: { expiresIn: '1h' },
           }),
     ],
-    controllers:[BranchController, AuthController],
+    controllers:[
+        BranchController, 
+        AuthController,
+        GlobalProductController
+    ],
     providers:[
         ProductService,
         BranchApplicationService,
         AuthService,
+        GlobalProductServiceApp,
+        BranchProductServiceApp,
         {
             provide:"authRepositoryPort",
             useClass: LoginRepository
@@ -44,6 +62,15 @@ import { JwtMiddleware } from './middleware/JwtMiddleware';
         }, {
             provide:"repositoryPort",
             useClass:BrancHRepository
+        },{
+            provide:"global-product-repository",
+            useClass:GlobalProductRepository
+        },{
+            provide:"productServiceDomain",
+            useClass:GlobalProductServiceDomain
+        },{
+            provide:"product-repository",
+            useClass:BranchProductRepository
         }
     ], 
     exports: [AuthService],

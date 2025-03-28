@@ -8,7 +8,7 @@ export class MapperEntity {
             branchEntity.name,
             branchEntity.address,
             branchEntity.city,
-            branchEntity.tenantid,
+            branchEntity.tenant_id,
             branchEntity.password
         )
   }

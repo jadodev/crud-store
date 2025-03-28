@@ -3,12 +3,16 @@ import { BranchDTO } from "src/application/dto/BranchDTO";
 import { BranchApplicationService } from "src/application/service/BranchApplicationService";
 import { BranchExceptionHandler } from "src/exceptions/HandlerException";
 import { ProductService } from "../service/ProductService";
+import { GlobalProductServiceApp } from "src/application/service/GlobalProductServiceApp";
+import { BranchProductServiceApp } from "src/application/service/BranchServiceProductApp";
 
 @Controller("branch")
 export class BranchController {
     constructor(
         private readonly branchService: BranchApplicationService,
-        private readonly service: ProductService
+        private readonly service: ProductService,
+        private readonly globalProductService: GlobalProductServiceApp,
+        private readonly branchProductService: BranchProductServiceApp
     ){}
 
     @Post()
@@ -86,7 +90,28 @@ export class BranchController {
     }
 
     @Post('products')
-    async fetchToMs(@Req() req: Request, @Body() requestProduct: any): Promise<any> {
-      return await this.service.getProductsFromMsProducts(requestProduct);
+    async fetchToMs(@Req() req, @Body() requestProduct: any): Promise<any> {
+
+        const tenantId = req.user.tenantid;
+
+        if (!tenantId) {
+            return { message: "No se encontró el tenantId en el token" };
+        }
+
+        const products = await this.service.getProductsFromMsProducts(requestProduct);
+
+        if (!products || products.length === 0) {
+            return { message: "No se encontraron productos" };
+        }
+
+        const registeredProducts = await this.globalProductService.registerProductos(products, tenantId);
+        
+        setTimeout( async ()=>{
+            for (const product of products) {
+                await this.branchProductService.registerBranchProduct(product.id, tenantId, product.stock);
+            }
+        },2000)
+
+        return { message: "Productos obtenidos, almacenados y asociados correctamente a la sucursal", data: registeredProducts };
     }
 } 
