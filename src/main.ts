@@ -9,7 +9,7 @@ async function bootstrap() {
     origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
-  });
+  })
 
   app.useGlobalFilters(new NotFoundFilter());
   await app.listen(process.env.PORT || 3001);
