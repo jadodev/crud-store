@@ -5,8 +5,8 @@ import { GlobalProductMapper } from "./GlobalProductMapper";
 export class BranchProductMapper {
     public static toDto (branchProduct: BranchProduct): BranchProductDTO{
         return new BranchProductDTO(
-            branchProduct.tenantId,
-            branchProduct.productId,
+            branchProduct.tenant_id,
+            branchProduct.product_id,
             branchProduct.quantity,
             branchProduct.product ? GlobalProductMapper.toDTO(branchProduct.product) : undefined
         );    
@@ -14,8 +14,8 @@ export class BranchProductMapper {
 
     public static toDomain(branchProductDto: BranchProductDTO): BranchProduct{
         return new BranchProduct(
-            branchProductDto.tenantId,
-            branchProductDto.productId,
+            branchProductDto.tenant_id,
+            branchProductDto.product_id,
             branchProductDto.quantity,
             branchProductDto.product ? GlobalProductMapper.toDomain(branchProductDto.product) : undefined
         )

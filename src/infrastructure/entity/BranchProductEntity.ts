@@ -15,9 +15,9 @@ export class BranchProductEntity {
   @JoinColumn({ name: 'tenant_id', referencedColumnName: 'tenant_id' })  
   tenant: BranchEntity;
 
-  @ManyToOne(() => GlobalProductEntity, { eager: true })
+  @ManyToOne(() => GlobalProductEntity, { eager: true, nullable: true })
   @JoinColumn({ name: 'product_id', referencedColumnName: 'id' })
-  product: GlobalProductEntity;
+  product: GlobalProductEntity | null;
 
   @Column()
   quantity: number;

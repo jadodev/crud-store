@@ -16,9 +16,14 @@ import { GlobalProductServiceDomain } from './domain/service/GlobalProductServic
 import { GlobalProductController } from './infrastructure/controller/GlobalProductController';
 import { GlobalProductEntity } from './infrastructure/entity/GlobalproductEntity';
 import { GlobalProductServiceApp } from './application/service/GlobalProductServiceApp';
-import { BranchProductServiceApp } from './application/service/BranchServiceProductApp';
 import { BranchProductEntity } from './infrastructure/entity/BranchProductEntity';
 import { BranchProductRepository } from './infrastructure/repository/BranchProductRepository';
+import { BranchProductController } from './infrastructure/controller/BranchProductController';
+import { ProductEntity } from './infrastructure/entity/ProductEntity';
+import { BranchProductServiceDomain } from './domain/service/BranchProductServiceDomain';
+import { ProductRepository } from './infrastructure/repository/ProductRepository';
+import { ProductServiceApp } from './application/service/ProductServiceApp';
+import { BranchProductServiceApp } from './application/service/BranchServiceProductApp';
 
 @Module({
     imports:[
@@ -34,7 +39,8 @@ import { BranchProductRepository } from './infrastructure/repository/BranchProdu
         TypeOrmModule.forFeature([
             BranchEntity, 
             GlobalProductEntity,
-            BranchProductEntity
+            BranchProductEntity,
+            ProductEntity
         ]),
         JwtModule.register({
             secret: process.env.JWT_SECRET || 'secreto',
@@ -44,13 +50,15 @@ import { BranchProductRepository } from './infrastructure/repository/BranchProdu
     controllers:[
         BranchController, 
         AuthController,
-        GlobalProductController
+        GlobalProductController,
+        BranchProductController,
     ],
     providers:[
         ProductService,
         BranchApplicationService,
         AuthService,
         GlobalProductServiceApp,
+        ProductServiceApp,
         BranchProductServiceApp,
         {
             provide:"authRepositoryPort",
@@ -71,6 +79,12 @@ import { BranchProductRepository } from './infrastructure/repository/BranchProdu
         },{
             provide:"product-repository",
             useClass:BranchProductRepository
+        },{
+            provide:"branch-product-service-domain",
+            useClass:BranchProductServiceDomain
+        },{
+            provide:"branch-product-repository",
+            useClass:ProductRepository
         }
     ], 
     exports: [AuthService],

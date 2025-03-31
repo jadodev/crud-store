@@ -2,7 +2,7 @@ import { Body, Controller, Post, Request } from "@nestjs/common";
 import { GlobalProductDTO } from "src/application/dto/GlobalProductDTO";
 import { GlobalProductServiceApp } from "src/application/service/GlobalProductServiceApp";
 
-@Controller("products")
+@Controller("global-products")
 export class GlobalProductController {
     constructor(
       private readonly productService: GlobalProductServiceApp
