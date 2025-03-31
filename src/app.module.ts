@@ -29,10 +29,10 @@ import { BranchProductServiceApp } from './application/service/BranchServiceProd
     imports:[
         TypeOrmModule.forRoot({
             type:"postgres",
-            host:"postgres",
+            host:"db",
             port: 5432,
-            username:process.env.USER_NAME_DB || "postgres",
-            password:process.env.PASSWORD || "root",
+            username:"postgres",
+            password:"root",
             database:"postgres",
             autoLoadEntities:true,
             retryAttempts: 5,
