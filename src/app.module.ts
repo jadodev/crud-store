@@ -29,8 +29,8 @@ import { BranchProductServiceApp } from './application/service/BranchServiceProd
     imports:[
         TypeOrmModule.forRoot({
             type:"postgres",
-            host:"postgres",
-            port: 5432,
+            host:"localhost",
+            port: 5433,
             username:"postgres",
             password:"root",
             database:"postgres",

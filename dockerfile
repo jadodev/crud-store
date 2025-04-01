@@ -11,10 +11,13 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 
 # Instala las dependencias con pnpm
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 # Copia el resto de los archivos del proyecto
 COPY . .
+
+# Compila TypeScript antes de ejecutar la aplicación
+RUN pnpm run build
 
 # Expón el puerto donde la app correrá
 EXPOSE 3001
